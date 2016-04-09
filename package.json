@@ -1,0 +1,67 @@
+{
+  "name": "vscode-postcss-sorting",
+  "displayName": "Post​CSS Sorting",
+  "description": "VS Code plugin to sort CSS rules content with specified order.",
+  "version": "1.0.0",
+  "publisher": "mrmlnc",
+  "engines": {
+    "vscode": "^0.10.10"
+  },
+  "icon": "icon.png",
+  "homepage": "https://github.com/mrmlnc/vscode-postcss-sorting",
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:PostCSSSorting.processEditor"
+  ],
+  "main": "./extension",
+  "contributes": {
+    "commands": [{
+      "command": "PostCSSSorting.processEditor",
+      "title": "PostCSS Sorting"
+    }],
+    "configuration": {
+      "type": "object",
+      "title": "PostCSSSorting configuration",
+      "properties": {
+        "PostCSSSorting": {
+          "default": {},
+          "description": "Settings for PostCSS Sorting plugin"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "postinstall": "node ./node_modules/vscode/bin/install"
+  },
+  "devDependencies": {
+    "vscode": "^0.11.0",
+    "xo": "^0.14.0"
+  },
+  "dependencies": {
+    "postcss": "^5.0.19",
+    "postcss-sorting": "^1.2.3"
+  },
+  "xo": {
+    "rules": {
+      "arrow-parens": [
+        2,
+        "always"
+      ],
+      "object-curly-spacing": [
+        2,
+        "always"
+      ],
+      "babel/object-curly-spacing": 0,
+      "space-before-function-paren": [
+        2,
+        "never"
+      ]
+    },
+    "envs": [
+      "node",
+      "mocha"
+    ]
+  }
+}

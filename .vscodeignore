@@ -1,0 +1,7 @@
+.vscode/**
+typings/**
+test/**
+.editorconfig
+.gitignore
+.travis.yml
+jsconfig.json
