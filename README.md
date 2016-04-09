@@ -42,7 +42,7 @@ See the [postcss-sorting documentation](https://github.com/hudochenkov/postcss-s
 
 ## Changelog
 
-See the [Releases section of our GitHub project](https://github.com/mrmlnc/vscode-attrs-sorter/releases) for changelogs for each release version.
+See the [Releases section of our GitHub project](https://github.com/mrmlnc/vscode-postcss-sorting/releases) for changelogs for each release version.
 
 ## License
 
