@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "postcss": "^5.0.19",
+    "postcss-scss": "^0.1.7",
     "postcss-sorting": "^1.2.3"
   },
   "xo": {

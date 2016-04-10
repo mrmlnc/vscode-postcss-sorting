@@ -2,7 +2,6 @@
 
 var vscode = require('vscode');
 var postcss = require('postcss');
-var postcssSorter = require('postcss-sorting');
 
 function activate(context) {
 	var processEditor = vscode.commands.registerTextEditorCommand('PostCSSSorting.processEditor', function(textEditor) {
@@ -16,13 +15,25 @@ function activate(context) {
 		var documentText = document.getText();
 		var lastLine = document.lineAt(document.lineCount - 1);
 		var selectAll = new vscode.Range(0, 0, lastLine.lineNumber, lastLine.range.end.character);
+		var lang = document.languageId || document._languageId;
 
-		postcss([postcssSorter(options)])
-			.process(documentText)
+		if (lang === 'sass') {
+			lang = require('postcss-scss');
+		} else {
+			lang = {};
+		}
+
+		postcss([require('postcss-sorting')(options)])
+			.process(documentText, {
+				syntax: lang
+			})
 			.then(function(result) {
 				textEditor.edit(function(editBuilder) {
 					editBuilder.replace(selectAll, result.css);
 				});
+			})
+			.catch(function(err) {
+				vscode.window.showWarningMessage(err);
 			});
 	});
 
