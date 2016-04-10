@@ -2,7 +2,7 @@
 
 > VS Code plugin to sort CSS rules content with specified order. Powered by [postcss-sorting](https://github.com/hudochenkov/postcss-sorting).
 >
-> Now works only with CSS and Scss. Waiting support for [Less](https://github.com/webschik/postcss-less).
+> Now works only with CSS and SCSS. Waiting support for [Less](https://github.com/webschik/postcss-less).
 
 ![2016-04-10_02-46-24](https://cloud.githubusercontent.com/assets/7034281/14407132/77dd07c4-fec6-11e5-8361-a47af434459c.gif)
 
