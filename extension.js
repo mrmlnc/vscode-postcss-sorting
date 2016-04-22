@@ -17,15 +17,9 @@ function activate(context) {
 		var selectAll = new vscode.Range(0, 0, lastLine.lineNumber, lastLine.range.end.character);
 		var lang = document.languageId || document._languageId;
 
-		if (lang === 'sass') {
-			lang = require('postcss-scss');
-		} else {
-			lang = {};
-		}
-
 		postcss([require('postcss-sorting')(options)])
-			.process(documentText, {
-				syntax: lang
+			.process(documentText, lang === 'sass' && {
+				syntax: require('postcss-scss')
 			})
 			.then(function(result) {
 				textEditor.edit(function(editBuilder) {
