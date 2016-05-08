@@ -1,32 +1,32 @@
 'use strict';
 
-var vscode = require('vscode');
-var postcss = require('postcss');
+const vscode = require('vscode');
+const postcss = require('postcss');
 
 function activate(context) {
-	var processEditor = vscode.commands.registerTextEditorCommand('PostCSSSorting.processEditor', function(textEditor) {
-		var options = Object.assign({
+	const processEditor = vscode.commands.registerTextEditorCommand('PostCSSSorting.processEditor', (textEditor) => {
+		const options = Object.assign({
 			'sort-order': 'default',
 			'empty-lines-between-children-rules': 0,
 			'sort-on-save': false
 		}, vscode.workspace.getConfiguration('PostCSSSorting'));
 
-		var document = textEditor.document;
-		var documentText = document.getText();
-		var lastLine = document.lineAt(document.lineCount - 1);
-		var selectAll = new vscode.Range(0, 0, lastLine.lineNumber, lastLine.range.end.character);
-		var lang = document.languageId || document._languageId;
+		const document = textEditor.document;
+		const documentText = document.getText();
+		const lastLine = document.lineAt(document.lineCount - 1);
+		const selectAll = new vscode.Range(0, 0, lastLine.lineNumber, lastLine.range.end.character);
+		const lang = document.languageId || document._languageId;
 
 		postcss([require('postcss-sorting')(options)])
 			.process(documentText, lang === 'sass' && {
 				syntax: require('postcss-scss')
 			})
-			.then(function(result) {
-				textEditor.edit(function(editBuilder) {
+			.then((result) => {
+				textEditor.edit((editBuilder) => {
 					editBuilder.replace(selectAll, result.css);
 				});
 			})
-			.catch(function(err) {
+			.catch((err) => {
 				vscode.window.showWarningMessage(err);
 			});
 	});
@@ -38,5 +38,7 @@ exports.activate = activate;
 
 // this method is called when your extension is deactivated
 function deactivate() {
+
 }
+
 exports.deactivate = deactivate;
