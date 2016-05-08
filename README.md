@@ -35,7 +35,7 @@ For example:
 {
   "PostCSSSorting": {
     "sort-order": ["padding", "margin"],
-    "sort-on-save": true
+    "preserve-empty-lines-between-children-rules": true
   }
 }
 ```
