@@ -8,7 +8,8 @@ function activate(context) {
 		const options = Object.assign({
 			'sort-order': 'default',
 			'empty-lines-between-children-rules': 0,
-			'sort-on-save': false
+			'empty-lines-between-media-rules': 0,
+			'preserve-empty-lines-between-children-rules': false
 		}, vscode.workspace.getConfiguration('PostCSSSorting'));
 
 		const document = textEditor.document;
