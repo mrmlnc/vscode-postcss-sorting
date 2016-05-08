@@ -15,7 +15,7 @@
   "activationEvents": [
     "onCommand:PostCSSSorting.processEditor"
   ],
-  "main": "./extension",
+  "main": "./extension.js",
   "contributes": {
     "commands": [{
       "command": "PostCSSSorting.processEditor",
@@ -33,33 +33,26 @@
     }
   },
   "devDependencies": {
-    "vscode": "^0.11.0",
-    "xo": "^0.14.0"
+    "vscode": "^0.11.12",
+    "xo": "^0.15.0"
   },
   "dependencies": {
-    "postcss": "^5.0.19",
-    "postcss-scss": "^0.1.7",
-    "postcss-sorting": "^1.2.3"
+    "postcss": "=5.0.21",
+    "postcss-scss": "=0.1.7",
+    "postcss-sorting": "=1.4.0"
+  },
+  "scripts": {
+    "test": "xo"
   },
   "xo": {
     "rules": {
-      "arrow-parens": [
-        2,
-        "always"
-      ],
-      "object-curly-spacing": [
-        2,
-        "always"
-      ],
+      "arrow-parens": [2, "always"],
+      "object-curly-spacing": [2, "always"],
       "babel/object-curly-spacing": 0,
-      "space-before-function-paren": [
-        2,
-        "never"
-      ]
+      "space-before-function-paren": [2, "never"]
     },
     "envs": [
-      "node",
-      "mocha"
+      "node"
     ]
   }
 }
