@@ -39,7 +39,7 @@
   "dependencies": {
     "postcss": "=5.0.21",
     "postcss-scss": "=0.1.7",
-    "postcss-sorting": "=1.4.0"
+    "postcss-sorting": "=1.4.1"
   },
   "scripts": {
     "test": "xo"
