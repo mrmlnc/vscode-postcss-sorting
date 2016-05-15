@@ -38,8 +38,8 @@
   },
   "dependencies": {
     "postcss": "=5.0.21",
-    "postcss-scss": "=0.1.7",
-    "postcss-sorting": "=1.4.1"
+    "postcss-scss": "=0.1.8",
+    "postcss-sorting": "=1.5.0"
   },
   "scripts": {
     "test": "xo"
