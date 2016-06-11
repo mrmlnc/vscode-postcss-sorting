@@ -33,13 +33,13 @@
     }
   },
   "devDependencies": {
-    "vscode": "^0.11.12",
-    "xo": "^0.15.0"
+    "vscode": "^0.11.13",
+    "xo": "^0.15.1"
   },
   "dependencies": {
     "postcss": "=5.0.21",
     "postcss-scss": "=0.1.8",
-    "postcss-sorting": "=1.5.0"
+    "postcss-sorting": "=1.6.0"
   },
   "scripts": {
     "test": "xo"
