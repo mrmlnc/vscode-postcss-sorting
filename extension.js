@@ -2,6 +2,8 @@
 
 const vscode = require('vscode');
 const postcss = require('postcss');
+const sorting = require('postcss-sorting');
+const scssSyntax = require('postcss-scss');
 
 function activate(context) {
 	const processEditor = vscode.commands.registerTextEditorCommand('PostCSSSorting.processEditor', (textEditor) => {
@@ -18,9 +20,9 @@ function activate(context) {
 		const selectAll = new vscode.Range(0, 0, lastLine.lineNumber, lastLine.range.end.character);
 		const lang = document.languageId || document._languageId;
 
-		postcss([require('postcss-sorting')(options)])
+		postcss([sorting(options)])
 			.process(documentText, lang === 'sass' && {
-				syntax: require('postcss-scss')
+				syntax: scssSyntax
 			})
 			.then((result) => {
 				textEditor.edit((editBuilder) => {
