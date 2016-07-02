@@ -21,19 +21,19 @@ For changes keyboard shortcuts, create a new rule in `File -> Preferences -> Key
 ```json
 {
   "key": "ctrl+shift+c",
-  "command": "PostCSSSorting.processEditor"
+  "command": "postcssSorting.sort"
 }
 ```
 
 ## Options
 
-You can override the default and user settings for individual projects. Just add an `PostCSSSorting` object to the `settings.json`file.
+You can override the default and user settings for individual projects. Just add an `postcssSorting` object to the `settings.json`file.
 
 For example:
 
 ```json
 {
-  "PostCSSSorting": {
+  "postcssSorting": {
     "sort-order": ["padding", "margin"],
     "preserve-empty-lines-between-children-rules": true
   }

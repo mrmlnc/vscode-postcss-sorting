@@ -6,13 +6,13 @@ const sorting = require('postcss-sorting');
 const scssSyntax = require('postcss-scss');
 
 function activate(context) {
-	const processEditor = vscode.commands.registerTextEditorCommand('PostCSSSorting.processEditor', (textEditor) => {
+	const processEditor = vscode.commands.registerTextEditorCommand('postcssSorting.sort', (textEditor) => {
 		const options = Object.assign({
 			'sort-order': 'default',
 			'empty-lines-between-children-rules': 0,
 			'empty-lines-between-media-rules': 0,
 			'preserve-empty-lines-between-children-rules': false
-		}, vscode.workspace.getConfiguration('PostCSSSorting'));
+		}, vscode.workspace.getConfiguration('postcssSorting'));
 
 		const document = textEditor.document;
 		const documentText = document.getText();

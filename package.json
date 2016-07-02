@@ -12,20 +12,27 @@
   "categories": [
     "Other"
   ],
+  "keywords": [
+    "css",
+    "less",
+    "scss",
+    "sass",
+    "stylus"
+  ],
   "activationEvents": [
-    "onCommand:PostCSSSorting.processEditor"
+    "onCommand:postcssSorting.sort"
   ],
   "main": "./extension.js",
   "contributes": {
     "commands": [{
-      "command": "PostCSSSorting.processEditor",
+      "command": "postcssSorting.sort",
       "title": "PostCSS Sorting"
     }],
     "configuration": {
       "type": "object",
       "title": "PostCSSSorting configuration",
       "properties": {
-        "PostCSSSorting": {
+        "postcssSorting": {
           "default": {},
           "description": "Settings for PostCSS Sorting plugin"
         }
