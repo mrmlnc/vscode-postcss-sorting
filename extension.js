@@ -3,7 +3,22 @@
 const vscode = require('vscode');
 const postcss = require('postcss');
 const sorting = require('postcss-sorting');
-const scssSyntax = require('postcss-scss');
+
+function getSyntax(language) {
+	switch (language) {
+		case 'less':
+			return require('postcss-less');
+		case 'scss':
+			return require('postcss-scss');
+		case 'sass-indented':
+		case 'sass':
+			return require('sugarss');
+		case 'stylus':
+			return require('sugarss');
+		default:
+			return false;
+	}
+}
 
 function activate(context) {
 	const processEditor = vscode.commands.registerTextEditorCommand('postcssSorting.sort', (textEditor) => {
@@ -18,12 +33,12 @@ function activate(context) {
 		const documentText = document.getText();
 		const lastLine = document.lineAt(document.lineCount - 1);
 		const selectAll = new vscode.Range(0, 0, lastLine.lineNumber, lastLine.range.end.character);
+
 		const lang = document.languageId || document._languageId;
+		const syntax = getSyntax(lang);
 
 		postcss([sorting(options)])
-			.process(documentText, lang === 'sass' && {
-				syntax: scssSyntax
-			})
+			.process(documentText, syntax && { syntax })
 			.then((result) => {
 				textEditor.edit((editBuilder) => {
 					editBuilder.replace(selectAll, result.css);

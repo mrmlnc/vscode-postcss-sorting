@@ -1,8 +1,6 @@
 # VS Code Post​CSS Sorting
 
 > VS Code plugin to sort CSS rules content with specified order. Powered by [postcss-sorting](https://github.com/hudochenkov/postcss-sorting).
->
-> Now works only with CSS and SCSS. Waiting support for [Less](https://github.com/webschik/postcss-less).
 
 ![2016-04-10_02-46-24](https://cloud.githubusercontent.com/assets/7034281/14407132/77dd07c4-fec6-11e5-8361-a47af434459c.gif)
 
@@ -13,6 +11,14 @@ To install, press `F1` and select `Extensions: Install Extensions` and then sear
 ## Usage
 
 Press `F1` and run the command named `Post​CSS Sorting`.
+
+## Supported languages
+
+  * CSS
+  * Less (experimental support)
+  * SCSS
+  * Sass (by [sass-indented](https://marketplace.visualstudio.com/items?itemName=robinbentley.sass-indented))
+  * Stylus (by [extensions](https://marketplace.visualstudio.com/search?term=stylu&target=VSCode&sortBy=Relevance))
 
 ## Keyboard shortcuts
 
