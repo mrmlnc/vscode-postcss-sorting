@@ -2,30 +2,37 @@
   "name": "vscode-postcss-sorting",
   "displayName": "PostCSS Sorting",
   "description": "VS Code plugin to sort CSS rules content with specified order.",
-  "version": "1.4.1",
+  "version": "2.0.0",
   "publisher": "mrmlnc",
   "engines": {
-    "vscode": "^0.10.10"
+    "vscode": "^1.3.0"
   },
   "icon": "icon.png",
   "homepage": "https://github.com/mrmlnc/vscode-postcss-sorting",
   "categories": [
     "Other"
   ],
+  "keywords": [
+    "css",
+    "less",
+    "scss",
+    "sass",
+    "stylus"
+  ],
   "activationEvents": [
-    "onCommand:PostCSSSorting.processEditor"
+    "onCommand:postcssSorting.sort"
   ],
   "main": "./extension.js",
   "contributes": {
     "commands": [{
-      "command": "PostCSSSorting.processEditor",
-      "title": "PostCSS Sorting"
+      "command": "postcssSorting.sort",
+      "title": "PostCSS Sorting: Run"
     }],
     "configuration": {
       "type": "object",
-      "title": "PostCSSSorting configuration",
+      "title": "Post​CSS Sorting configuration",
       "properties": {
-        "PostCSSSorting": {
+        "postcssSorting": {
           "default": {},
           "description": "Settings for PostCSS Sorting plugin"
         }
@@ -37,9 +44,11 @@
     "xo": "^0.16.0"
   },
   "dependencies": {
-    "postcss": "=5.0.21",
-    "postcss-scss": "=0.1.8",
-    "postcss-sorting": "=1.6.1"
+    "postcss": "5.0.21",
+    "postcss-scss": "0.1.8",
+    "postcss-less": "0.14.0",
+    "postcss-sorting": "1.6.1",
+    "sugarss": "0.1.4"
   },
   "scripts": {
     "test": "xo"
