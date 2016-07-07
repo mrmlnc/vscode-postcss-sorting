@@ -17,8 +17,8 @@ Press `F1` and run the command named `Post​CSS Sorting: Run`.
   * CSS
   * Less (experimental support)
   * SCSS
-  * Sass (by [sass-indented](https://marketplace.visualstudio.com/items?itemName=robinbentley.sass-indented))
-  * Stylus (by [extensions](https://marketplace.visualstudio.com/search?term=stylu&target=VSCode&sortBy=Relevance))
+  * Sass (experimental and by [sass-indented](https://marketplace.visualstudio.com/items?itemName=robinbentley.sass-indented))
+  * Stylus (experimental, only indent-based CSS syntax and by [extensions](https://marketplace.visualstudio.com/search?term=stylu&target=VSCode&sortBy=Relevance))
 
 ## Keyboard shortcuts
 
