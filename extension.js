@@ -12,7 +12,6 @@ function getSyntax(language) {
 			return require('postcss-scss');
 		case 'sass-indented':
 		case 'sass':
-			return require('sugarss');
 		case 'stylus':
 			return require('sugarss');
 		default:
@@ -53,10 +52,3 @@ function activate(context) {
 }
 
 exports.activate = activate;
-
-// this method is called when your extension is deactivated
-function deactivate() {
-
-}
-
-exports.deactivate = deactivate;
