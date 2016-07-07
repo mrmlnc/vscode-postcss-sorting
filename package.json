@@ -26,11 +26,11 @@
   "contributes": {
     "commands": [{
       "command": "postcssSorting.sort",
-      "title": "PostCSS Sorting"
+      "title": "PostCSS Sorting: Run"
     }],
     "configuration": {
       "type": "object",
-      "title": "PostCSSSorting configuration",
+      "title": "Post​CSS Sorting configuration",
       "properties": {
         "postcssSorting": {
           "default": {},

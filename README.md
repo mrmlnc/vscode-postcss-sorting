@@ -10,7 +10,7 @@ To install, press `F1` and select `Extensions: Install Extensions` and then sear
 
 ## Usage
 
-Press `F1` and run the command named `Post​CSS Sorting`.
+Press `F1` and run the command named `Post​CSS Sorting: Run`.
 
 ## Supported languages
 
