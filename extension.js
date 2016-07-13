@@ -10,10 +10,6 @@ function getSyntax(language) {
 			return require('postcss-less');
 		case 'scss':
 			return require('postcss-scss');
-		case 'sass-indented':
-		case 'sass':
-		case 'stylus':
-			return require('sugarss');
 		default:
 			return false;
 	}
