@@ -44,11 +44,10 @@
     "xo": "^0.16.0"
   },
   "dependencies": {
-    "postcss": "5.0.21",
+    "postcss": "5.1.0",
     "postcss-scss": "0.1.8",
     "postcss-less": "0.14.0",
-    "postcss-sorting": "1.6.1",
-    "sugarss": "0.1.4"
+    "postcss-sorting": "1.6.1"
   },
   "scripts": {
     "test": "xo"
