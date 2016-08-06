@@ -42,8 +42,8 @@
     "xo": "^0.16.0"
   },
   "dependencies": {
-    "postcss": "5.1.0",
-    "postcss-scss": "0.1.8",
+    "postcss": "5.1.1",
+    "postcss-scss": "0.1.9",
     "postcss-less": "0.14.0",
     "postcss-sorting": "1.6.1"
   },
