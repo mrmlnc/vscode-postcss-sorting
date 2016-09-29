@@ -52,7 +52,7 @@
     "postcss": "5.1.2",
     "postcss-scss": "0.2.1",
     "postcss-less": "0.14.0",
-    "postcss-sorting": "1.6.1"
+    "postcss-sorting": "1.7.0"
   },
   "scripts": {
     "test": "xo"
