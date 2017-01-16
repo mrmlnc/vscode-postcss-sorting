@@ -45,14 +45,14 @@
     }
   },
   "devDependencies": {
-    "vscode": "^0.11.13",
-    "xo": "^0.16.0"
+    "vscode": "^1.0.3",
+    "xo": "^0.17.1"
   },
   "dependencies": {
     "postcss": "5.1.2",
-    "postcss-scss": "0.2.1",
-    "postcss-less": "0.14.0",
-    "postcss-sorting": "1.6.1"
+    "postcss-scss": "0.4.0",
+    "postcss-less": "0.15.0",
+    "postcss-sorting": "2.0.1"
   },
   "scripts": {
     "test": "xo"
@@ -62,9 +62,10 @@
       "no-var": 2,
       "prefer-const": [2, { "destructuring": "all" }],
       "space-before-function-paren": [2, "never"],
-      "babel/arrow-parens": [2, "always"],
-      "babel/object-curly-spacing": [2, "always"],
-      "babel/generator-star-spacing": [2, "after"]
+      "arrow-parens": [2, "always"],
+      "object-curly-spacing": [2, "always"],
+      "generator-star-spacing": [2, "after"],
+      "import/no-unresolved": 0
     },
     "envs": [
       "node"
