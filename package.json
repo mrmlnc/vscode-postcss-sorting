@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "postcss": "5.1.2",
-    "postcss-scss": "0.4.0",
+    "postcss-scss": "0.4.1",
     "postcss-less": "0.15.0",
     "postcss-sorting": "2.0.1"
   },
