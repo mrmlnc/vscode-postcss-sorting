@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"target": "es6",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"rootDir": "src",
+		"outDir": "out",
+		"forceConsistentCasingInFileNames": true,
+		"noUnusedParameters": true,
+		"noUnusedLocals": true,
+		"pretty": true,
+		"removeComments": true,
+		"declaration": false
+	}
+}
