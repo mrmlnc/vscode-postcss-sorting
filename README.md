@@ -42,6 +42,12 @@ For example:
 
 See the [postcss-sorting documentation](https://github.com/hudochenkov/postcss-sorting#options) for all rules and predefined configs.
 
+Also we support:
+
+  * `postcssSortingConfig` property in `package.json`
+  * `.postcss-sorting.json`
+  * `postcss-sorting.json`
+
 ## Keyboard shortcuts
 
 For changes keyboard shortcuts, create a new rule in `File -> Preferences -> Keyboard Shortcuts`:
