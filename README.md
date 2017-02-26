@@ -44,6 +44,7 @@ See the [postcss-sorting documentation](https://github.com/hudochenkov/postcss-s
 
 Also we support:
 
+  * `postcssSorting` as `string` starts with `.` or `~` or `/`
   * `postcssSortingConfig` property in `package.json`
   * `.postcss-sorting.json`
   * `postcss-sorting.json`

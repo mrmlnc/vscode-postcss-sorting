@@ -38,7 +38,7 @@
       "title": "Post​CSS Sorting configuration",
       "properties": {
         "postcssSorting": {
-          "type": "object",
+          "type": ["object", "string"],
           "default": {},
           "description": "Settings for PostCSS Sorting plugin"
         }
