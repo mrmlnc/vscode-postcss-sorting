@@ -2,73 +2,91 @@
 
 import * as vscode from 'vscode';
 
-import * as postcss from 'postcss';
-import * as postless from 'postcss-less';
-import * as postscss from 'postcss-scss';
-import * as postcssSorting from 'postcss-sorting';
+import ConfigProfiler from 'config-profiler';
 
-import ConfigResolver from 'vscode-config-resolver';
+import * as sorter from './postcss-sorting';
+import * as settingsManager from './managers/settings';
+import * as utils from './utils';
 
-function getSyntax(language) {
-	switch (language) {
-		case 'less':
-			return postless;
-		case 'scss':
-			return postscss;
-		default:
-			return false;
+import { ISettings } from './types';
+
+const configProfiler = new ConfigProfiler(null, {
+	configFiles: [
+		'postcss-sorting.js',
+		'postcss-sorting.json',
+		'.postcss-sorting.js',
+		'.postcss-sorting.json'
+	],
+	props: {
+		package: 'postcssSortingConfig'
 	}
+});
+
+function getConfigForFile(document: vscode.TextDocument, config: object | string) {
+	return configProfiler.getConfig(document.uri.fsPath, { settings: config });
 }
 
-/**
- * Check syntax support.
- *
- * @param {any} ext
- * @returns {boolean}
- */
-function isSupportedSyntax(document: vscode.TextDocument): boolean {
-	return /(css|less|scss)/.test(document.languageId);
+function use(settings: ISettings, document: vscode.TextDocument, range: vscode.Range) {
+	return getConfigForFile(document, settings.config)
+		.then((config) => !config ? null : sorter.use(config, document, range));
 }
 
 export function activate(context: vscode.ExtensionContext) {
-	const onCommand = vscode.commands.registerTextEditorCommand('postcssSorting.sort', (textEditor) => {
-		const settings = vscode.workspace.getConfiguration().get('postcssSorting');
-		const configResolver = new ConfigResolver(vscode.workspace.rootPath);
-		const options = {
-			packageProp: 'postcssSortingConfig',
-			configFiles: [
-				'.postcss-sorting.json',
-				'postcss-sorting.json'
-			],
-			editorSettings: settings
-		};
+	const outputChannel: vscode.OutputChannel = null;
 
-		configResolver.scan(textEditor.document.uri.fsPath, options).then((config) => {
-			const document = textEditor.document;
-			if (!isSupportedSyntax(document)) {
-				console.error('Cannot execute PostCSS Sorting because there is not style files. Supported: LESS, SCSS and CSS.');
-				return;
-			}
+	// Supported languages
+	const supportedDocuments: vscode.DocumentSelector = [
+		{ language: 'css', scheme: 'file' },
+		{ language: 'postcss', scheme: 'file' },
+		{ language: 'scss', scheme: 'file' },
+		{ language: 'less', scheme: 'file' }
+	];
 
-			const documentText = document.getText();
-			const lastLine = document.lineAt(document.lineCount - 1);
-			const selectAll = new vscode.Range(0, 0, lastLine.lineNumber, lastLine.range.end.character);
+	// Set current workspace
+	configProfiler.setWorkspace(vscode.workspace.rootPath || process.cwd());
 
-			const lang = document.languageId;
-			const syntax = getSyntax(lang);
+	// For plugin command: "postcssSorting.execute"
+	const command = vscode.commands.registerTextEditorCommand('postcssSorting.execute', (textEditor) => {
+		const settings = settingsManager.getSettings();
+		const document = textEditor.document;
 
-			postcss([postcssSorting((config && config.json) || {})])
-				.process(documentText, syntax && { syntax })
-				.then((result) => {
-					textEditor.edit((editBuilder) => {
-						editBuilder.replace(selectAll, result.css);
-					});
-				})
-				.catch((err) => {
-					vscode.window.showWarningMessage(err);
+		use(settings, document, null)
+			.then((result) => {
+				if (!result) {
+					return;
+				}
+
+				console.log('Result from command');
+				console.log(result);
+
+				textEditor.edit((editBuilder) => {
+					editBuilder.replace(result.range, result.css);
 				});
-		});
+			})
+			.catch((err) => utils.output(outputChannel, err, settings.showErrorMessages));
 	});
 
-	context.subscriptions.push(onCommand);
+	// For commands: "Format Document" and "Format Selection"
+	const format = vscode.languages.registerDocumentRangeFormattingEditProvider(supportedDocuments, {
+		provideDocumentRangeFormattingEdits(document, range) {
+			const settings = settingsManager.getSettings();
+
+			return use(settings, document, range)
+				.then((result) => {
+					if (!result) {
+						return;
+					}
+
+					console.log('Result from extension formatter');
+					console.log(result);
+
+					return [vscode.TextEdit.replace(result.range, result.css)];
+				})
+				.catch((err) => utils.output(outputChannel, err, settings.showErrorMessages));
+		}
+	});
+
+	// Subscriptions
+	context.subscriptions.push(command);
+	context.subscriptions.push(format);
 }
