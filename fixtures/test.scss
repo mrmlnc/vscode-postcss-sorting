@@ -1,0 +1,15 @@
+.block {
+	position: absolute;
+
+	span {
+		display: inline-block;
+	}
+
+	width: 50%;
+
+	&__element {
+		display: none;
+	}
+
+	top: 0;
+}
