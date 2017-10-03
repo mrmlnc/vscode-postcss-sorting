@@ -11,12 +11,14 @@ import * as utils from './utils';
 import { ISettings } from './types';
 
 const configProfiler = new ConfigProfiler(null, {
+	allowHomeDirectory: true,
 	configFiles: [
 		'postcss-sorting.js',
 		'postcss-sorting.json',
 		'.postcss-sorting.js',
 		'.postcss-sorting.json'
 	],
+	envVariableName: 'POSTCSS_SORTING_CONFIG',
 	props: {
 		package: 'postcssSortingConfig'
 	}
