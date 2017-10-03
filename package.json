@@ -81,7 +81,7 @@
   "scripts": {
     "postinstall": "node ./node_modules/vscode/bin/install",
     "clean": "rimraf out",
-    "lint": "tslint src/**/*.ts",
+    "lint": "tslint src/**/*.ts -p .",
     "compile": "tsc",
     "test": "mocha out/**/*.spec.js -s 0",
     "build": "npm run clean && npm run lint && npm run compile && npm t",
