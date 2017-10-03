@@ -49,12 +49,14 @@
             "string"
           ],
           "default": {},
-          "description": "Config object for PostCSS Sorting or path to config file."
+          "description": "Config object for PostCSS Sorting or path to config file.",
+          "scope": "resource"
         },
         "postcssSorting.showErrorMessages": {
           "type": "boolean",
           "default": true,
-          "description": "Show error messages or not. Will be automatically set to false if 'editor.formatOnSave' is enabled."
+          "description": "Show error messages or not. Will be automatically set to false if 'editor.formatOnSave' is enabled.",
+          "scope": "resource"
         }
       }
     }
