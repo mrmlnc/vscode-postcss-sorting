@@ -4,14 +4,11 @@ import * as vscode from 'vscode';
 
 import { ISettings } from '../types';
 
-export function getSettings(): ISettings {
-	const settings = Object.assign(
-		{},
-		vscode.workspace.getConfiguration().get<ISettings>('postcssSorting'),
-		vscode.workspace.getConfiguration('editor').get('formatOnSave')
-	);
+export function getSettings(workspace: vscode.Uri): ISettings {
+	const settings = vscode.workspace.getConfiguration(null, workspace).get('postcssSorting') as ISettings;
+	const formatOnSave = vscode.workspace.getConfiguration('editor', workspace).get('formatOnSave');
 
-	if (settings.formatOnSave) {
+	if (formatOnSave) {
 		settings.showErrorMessages = false;
 	}
 

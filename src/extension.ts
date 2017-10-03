@@ -25,6 +25,12 @@ const configProfiler = new ConfigProfiler(null, {
 });
 
 function getConfigForFile(document: vscode.TextDocument, config: object | string) {
+	const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
+	const workspace = workspaceFolder.uri.fsPath;
+
+	// Set current workspace
+	configProfiler.setWorkspace(workspace);
+
 	return configProfiler.getConfig(document.uri.fsPath, { settings: config });
 }
 
@@ -44,13 +50,12 @@ export function activate(context: vscode.ExtensionContext) {
 		{ language: 'less', scheme: 'file' }
 	];
 
-	// Set current workspace
-	configProfiler.setWorkspace(vscode.workspace.rootPath || process.cwd());
-
 	// For plugin command: "postcssSorting.execute"
 	const command = vscode.commands.registerTextEditorCommand('postcssSorting.execute', (textEditor) => {
-		const settings = settingsManager.getSettings();
 		const document = textEditor.document;
+
+		const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
+		const settings = settingsManager.getSettings(workspaceFolder.uri);
 
 		use(settings, document, null)
 			.then((result) => {
@@ -68,7 +73,8 @@ export function activate(context: vscode.ExtensionContext) {
 	// For commands: "Format Document" and "Format Selection"
 	const format = vscode.languages.registerDocumentRangeFormattingEditProvider(supportedDocuments, {
 		provideDocumentRangeFormattingEdits(document, range) {
-			const settings = settingsManager.getSettings();
+			const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
+			const settings = settingsManager.getSettings(workspaceFolder.uri);
 
 			return use(settings, document, range)
 				.then((result) => {
