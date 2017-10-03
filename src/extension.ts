@@ -56,9 +56,6 @@ export function activate(context: vscode.ExtensionContext) {
 					return;
 				}
 
-				console.log('Result from command');
-				console.log(result);
-
 				textEditor.edit((editBuilder) => {
 					editBuilder.replace(result.range, result.css);
 				});
@@ -76,9 +73,6 @@ export function activate(context: vscode.ExtensionContext) {
 					if (!result) {
 						return;
 					}
-
-					console.log('Result from extension formatter');
-					console.log(result);
 
 					return [vscode.TextEdit.replace(result.range, result.css)];
 				})
