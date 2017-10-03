@@ -74,7 +74,7 @@ export function activate(context: vscode.ExtensionContext) {
 						return;
 					}
 
-					return [vscode.TextEdit.replace(result.range, result.css)];
+					return <any>[vscode.TextEdit.replace(result.range, result.css)];
 				})
 				.catch((err) => utils.output(outputChannel, err, settings.showErrorMessages));
 		}
