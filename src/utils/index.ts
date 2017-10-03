@@ -2,16 +2,16 @@
 
 import * as vscode from 'vscode';
 
-export function output(output: vscode.OutputChannel, message: string, autoShowOutput = true): void {
-	if (!output) {
-		output = vscode.window.createOutputChannel('Stylefmt');
+export function output(channel: vscode.OutputChannel, message: string, autoShowOutput = true): void {
+	if (!channel) {
+		channel = vscode.window.createOutputChannel('Stylefmt');
 	}
 
-	output.clear();
-	output.appendLine('[Stylefmt]');
-	output.append(message.toString());
+	channel.clear();
+	channel.appendLine('[Stylefmt]');
+	channel.append(message.toString());
 
 	if (autoShowOutput) {
-		output.show();
+		channel.show();
 	}
 }
