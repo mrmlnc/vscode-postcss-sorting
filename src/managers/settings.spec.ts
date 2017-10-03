@@ -12,7 +12,7 @@ function makeVscodeWorkspace() {
 					return { config: {}, showErrorMessages: true };
 				}
 				if (type === 'formatOnSave') {
-					return { formatOnSave: true };
+					return true;
 				}
 			}
 		})
@@ -30,7 +30,7 @@ describe('Managers → Settings', () => {
 
 	describe('.getSettings', () => {
 		it('should return settings', () => {
-			const expected = { config: {}, showErrorMessages: false, formatOnSave: true };
+			const expected = { config: {}, showErrorMessages: false };
 			const actual = manager.getSettings();
 
 			assert.deepEqual(actual, expected);
