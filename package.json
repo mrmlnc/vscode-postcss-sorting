@@ -44,7 +44,10 @@
       "title": "Post​CSS Sorting configuration",
       "properties": {
         "postcssSorting.config": {
-          "type": ["object", "string"],
+          "type": [
+            "object",
+            "string"
+          ],
           "default": {},
           "description": "Config object for PostCSS Sorting or path to config file."
         },
@@ -58,27 +61,27 @@
   },
   "devDependencies": {
     "@types/micromatch": "^2.3.29",
-    "@types/mocha": "^2.2.41",
-    "@types/node": "^7.0.16",
-    "@types/proxyquire": "^1.3.27",
-    "mocha": "^3.3.0",
-    "proxyquire": "^1.7.11",
-    "tslint": "^5.2.0",
-    "tslint-config-xo": "^1.2.0",
-    "typescript": "^2.3.2",
-    "vscode": "^1.1.0"
+    "@types/mocha": "^2.2.43",
+    "@types/node": "^8.0.32",
+    "@types/proxyquire": "^1.3.28",
+    "mocha": "^4.0.0",
+    "proxyquire": "^1.8.0",
+    "tslint": "^5.7.0",
+    "tslint-config-xo": "^1.3.0",
+    "typescript": "^2.5.3",
+    "vscode": "^1.1.5"
   },
   "dependencies": {
-    "config-profiler": "^2.0.0",
-    "postcss": "5.2.17",
-    "postcss-less": "0.15.0",
-    "postcss-scss": "0.4.1",
-    "postcss-sorting": "2.0.1"
+    "config-profiler": "^2.0.3",
+    "postcss": "6.0.12",
+    "postcss-less": "1.1.1",
+    "postcss-scss": "1.0.2",
+    "postcss-sorting": "3.0.2"
   },
   "scripts": {
     "postinstall": "node ./node_modules/vscode/bin/install",
     "clean": "rimraf out",
-    "lint": "tslint src/**/*.ts",
+    "lint": "tslint src/**/*.ts -p .",
     "compile": "tsc",
     "test": "mocha out/**/*.spec.js -s 0",
     "build": "npm run clean && npm run lint && npm run compile && npm t",

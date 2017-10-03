@@ -11,12 +11,14 @@ import * as utils from './utils';
 import { ISettings } from './types';
 
 const configProfiler = new ConfigProfiler(null, {
+	allowHomeDirectory: true,
 	configFiles: [
 		'postcss-sorting.js',
 		'postcss-sorting.json',
 		'.postcss-sorting.js',
 		'.postcss-sorting.json'
 	],
+	envVariableName: 'POSTCSS_SORTING_CONFIG',
 	props: {
 		package: 'postcssSortingConfig'
 	}
@@ -56,9 +58,6 @@ export function activate(context: vscode.ExtensionContext) {
 					return;
 				}
 
-				console.log('Result from command');
-				console.log(result);
-
 				textEditor.edit((editBuilder) => {
 					editBuilder.replace(result.range, result.css);
 				});
@@ -77,10 +76,7 @@ export function activate(context: vscode.ExtensionContext) {
 						return;
 					}
 
-					console.log('Result from extension formatter');
-					console.log(result);
-
-					return [vscode.TextEdit.replace(result.range, result.css)];
+					return <any>[vscode.TextEdit.replace(result.range, result.css)];
 				})
 				.catch((err) => utils.output(outputChannel, err, settings.showErrorMessages));
 		}
