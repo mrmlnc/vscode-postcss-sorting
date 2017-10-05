@@ -16,7 +16,8 @@ Press <kbd>F1</kbd> and run the command named `PostCSS Sorting: Run`.
 ## Supported languages
 
   * CSS
-  * Less (experimental support)
+  * PostCSS
+  * Less
   * SCSS
 
 ## Options
@@ -27,7 +28,7 @@ For example:
 
 ```json
 {
-  "postcssSorting": {
+  "postcssSorting.config": {
     "order": [
       "custom-properties",
       "dollar-variables",
@@ -48,6 +49,7 @@ Also we support:
   * `postcssSortingConfig` property in `package.json`
   * `.postcss-sorting.json`
   * `postcss-sorting.json`
+  * `POSTCSS_SORTING_CONFIG` env
 
 ## Keyboard shortcuts
 
@@ -56,7 +58,7 @@ For changes keyboard shortcuts, create a new rule in `File -> Preferences -> Key
 ```json
 {
   "key": "ctrl+shift+c",
-  "command": "postcssSorting.sort"
+  "command": "postcssSorting.execute"
 }
 ```
 
