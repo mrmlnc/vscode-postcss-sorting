@@ -2,7 +2,7 @@
   "name": "vscode-postcss-sorting",
   "displayName": "PostCSS Sorting",
   "description": "VS Code plugin to sort CSS rules content with specified order.",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "publisher": "mrmlnc",
   "license": "MIT",
   "engines": {
