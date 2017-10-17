@@ -75,7 +75,7 @@
   },
   "dependencies": {
     "config-profiler": "^2.0.3",
-    "postcss": "6.0.12",
+    "postcss": "6.0.13",
     "postcss-less": "1.1.1",
     "postcss-scss": "1.0.2",
     "postcss-sorting": "3.0.2"
