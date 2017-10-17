@@ -26,12 +26,15 @@ const configProfiler = new ConfigProfiler(null, {
 
 function getConfigForFile(document: vscode.TextDocument, config: object | string) {
 	const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
-	const workspace = workspaceFolder.uri.fsPath;
+	const filepath = document.uri.fsPath;
+
+	// Use workspace directory or filepath of current file as workspace folder
+	const workspace = workspaceFolder ? workspaceFolder.uri.fsPath : filepath;
 
 	// Set current workspace
 	configProfiler.setWorkspace(workspace);
 
-	return configProfiler.getConfig(document.uri.fsPath, { settings: config });
+	return configProfiler.getConfig(filepath, { settings: config });
 }
 
 function use(settings: ISettings, document: vscode.TextDocument, range: vscode.Range) {
@@ -52,10 +55,16 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// For plugin command: "postcssSorting.execute"
 	const command = vscode.commands.registerTextEditorCommand('postcssSorting.execute', (textEditor) => {
+		// Prevent run command without active TextEditor
+		if (!vscode.window.activeTextEditor) {
+			return null;
+		}
+
 		const document = textEditor.document;
 
 		const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
-		const settings = settingsManager.getSettings(workspaceFolder.uri);
+		const workspaceUri = workspaceFolder ? workspaceFolder.uri : null;
+		const settings = settingsManager.getSettings(workspaceUri);
 
 		use(settings, document, null)
 			.then((result) => {
@@ -73,8 +82,14 @@ export function activate(context: vscode.ExtensionContext) {
 	// For commands: "Format Document" and "Format Selection"
 	const format = vscode.languages.registerDocumentRangeFormattingEditProvider(supportedDocuments, {
 		provideDocumentRangeFormattingEdits(document, range) {
+			// Prevent run command without active TextEditor
+			if (!vscode.window.activeTextEditor) {
+				return null;
+			}
+
 			const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
-			const settings = settingsManager.getSettings(workspaceFolder.uri);
+			const workspaceUri = workspaceFolder ? workspaceFolder.uri : null;
+			const settings = settingsManager.getSettings(workspaceUri);
 
 			return use(settings, document, range)
 				.then((result) => {
