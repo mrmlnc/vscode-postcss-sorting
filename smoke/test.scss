@@ -1,0 +1,9 @@
+.test {
+	content: "";
+	display: block;
+
+	&.nested {
+		content: "";
+		display: block;
+	}
+}

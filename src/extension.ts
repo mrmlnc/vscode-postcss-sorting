@@ -1,109 +1,147 @@
-'use strict';
+import * as path from 'path';
 
+import * as micromatch from 'micromatch';
 import * as vscode from 'vscode';
 
-import ConfigProfiler from 'config-profiler';
+import StylesProvider from './providers/styles';
 
-import * as settingsManager from './managers/settings';
-import * as sorter from './postcss-sorting';
-import * as utils from './utils';
+import { IPluginSettings } from './types';
 
-import { IResult, ISettings } from './types';
+let output: vscode.OutputChannel;
 
-const configProfiler = new ConfigProfiler(null, {
-	allowHomeDirectory: true,
-	configFiles: [
-		'postcss-sorting.js',
-		'postcss-sorting.json',
-		'.postcss-sorting.js',
-		'.postcss-sorting.json'
-	],
-	envVariableName: 'POSTCSS_SORTING_CONFIG',
-	props: {
-		package: 'postcssSortingConfig'
+/**
+ * Show message in iutput channel.
+ */
+function showOutput(msg: string, autoShowOutput: boolean = true): void {
+	if (!output) {
+		output = vscode.window.createOutputChannel('Postcss Sorting');
 	}
-});
 
-function getConfigForFile(document: vscode.TextDocument, config: object | string): Promise<{}> {
-	const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
-	const filepath = document.uri.fsPath;
+	output.clear();
+	output.appendLine('[Postcss Sorting]\n');
+	output.append(msg);
 
-	// Use workspace directory or filepath of current file as workspace folder
-	const workspace = workspaceFolder ? workspaceFolder.uri.fsPath : filepath;
-
-	// Set current workspace
-	configProfiler.setWorkspace(workspace);
-
-	return configProfiler.getConfig(filepath, { settings: config });
+	if (autoShowOutput) {
+		output.show();
+	}
 }
 
-function use(settings: ISettings, document: vscode.TextDocument, range: vscode.Range): Promise<IResult> {
-	return getConfigForFile(document, settings.config)
-		.then((config) => !config ? null : sorter.use(config, document, range));
+interface IProviderOptions {
+	document: vscode.TextDocument;
+	selection: vscode.Selection;
+	workspace: string;
+	filepath: string;
+	settings: IPluginSettings;
+}
+
+function getProvider(options: IProviderOptions): StylesProvider {
+	const { document, selection, workspace, filepath, settings } = options;
+
+	const stylesProvider = new StylesProvider(document, selection, document.languageId, workspace, filepath, settings);
+
+	if (stylesProvider.isApplycable()) {
+		return stylesProvider;
+	}
+
+	return null;
 }
 
 export function activate(context: vscode.ExtensionContext): void {
-	const outputChannel: vscode.OutputChannel = null;
-
-	// Supported languages
-	const supportedDocuments: vscode.DocumentSelector = [
-		{ language: 'css', scheme: 'file' },
-		{ language: 'postcss', scheme: 'file' },
-		{ language: 'scss', scheme: 'file' },
-		{ language: 'less', scheme: 'file' }
-	];
-
-	// For plugin command: "postcssSorting.execute"
-	const command = vscode.commands.registerTextEditorCommand('postcssSorting.execute', (textEditor) => {
+	const onCommand = vscode.commands.registerTextEditorCommand('postcssSorting.execute', (textEditor) => {
 		// Prevent run command without active TextEditor
 		if (!vscode.window.activeTextEditor) {
 			return null;
 		}
 
 		const document = textEditor.document;
-
+		const selection = textEditor.selection;
+		const filepath = document.uri.fsPath;
 		const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
+
+		// Use workspace directory or filepath of current file as workspace folder
+		const workspace = workspaceFolder ? workspaceFolder.uri.fsPath : filepath;
 		const workspaceUri = workspaceFolder ? workspaceFolder.uri : null;
-		const settings = settingsManager.getSettings(workspaceUri);
+		const settings = vscode.workspace.getConfiguration('postcssSorting', workspaceUri) as IPluginSettings;
 
-		use(settings, document, null)
-			.then((result) => {
-				if (!result) {
-					return;
-				}
+		const provider = getProvider({
+			document,
+			selection,
+			workspace,
+			filepath,
+			settings
+		});
 
-				textEditor.edit((editBuilder) => {
-					editBuilder.replace(result.range, result.css);
-				});
-			})
-			.catch((err) => utils.output(outputChannel, err, settings.showErrorMessages));
-	});
+		if (!provider) {
+			return showOutput(`We do not support "${document.languageId}" syntax.`);
+		}
 
-	// For commands: "Format Document" and "Format Selection"
-	const format = vscode.languages.registerDocumentRangeFormattingEditProvider(supportedDocuments, {
-		provideDocumentRangeFormattingEdits(document: vscode.TextDocument, range: vscode.Range): vscode.ProviderResult<vscode.TextEdit[]> {
-			// Prevent run command without active TextEditor
-			if (!vscode.window.activeTextEditor) {
-				return null;
-			}
-
-			const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
-			const workspaceUri = workspaceFolder ? workspaceFolder.uri : null;
-			const settings = settingsManager.getSettings(workspaceUri);
-
-			return use(settings, document, range)
-				.catch((err) => utils.output(outputChannel, err, settings.showErrorMessages))
-				.then((result) => {
-					if (!result) {
-						return;
+		provider.format().then((blocks) => {
+			textEditor.edit((builder) => {
+				blocks.forEach((block) => {
+					if (block.error) {
+						showOutput(block.error.toString(), settings.showErrorMessages);
 					}
 
-					return [vscode.TextEdit.replace(result.range, result.css)];
+					builder.replace(block.range, block.content);
 				});
-		}
+			});
+		}).catch((err: Error) => showOutput(err.stack, settings.showErrorMessages));
 	});
 
-	// Subscriptions
-	context.subscriptions.push(command);
-	context.subscriptions.push(format);
+	const onSave = vscode.workspace.onWillSaveTextDocument((event) => {
+		// Prevent run command without active TextEditor
+		if (!vscode.window.activeTextEditor) {
+			return null;
+		}
+
+		const document = event.document;
+		const filepath = document.uri.fsPath;
+		const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
+		// Use workspace directory or filepath of current file as workspace folder
+		const workspace = workspaceFolder ? workspaceFolder.uri.fsPath : filepath;
+		const workspaceUri = workspaceFolder ? workspaceFolder.uri : null;
+		const settings = vscode.workspace.getConfiguration('postcssSorting', workspaceUri) as IPluginSettings;
+
+		// Skip files without providers
+		const provider = getProvider({
+			document,
+			selection: null,
+			workspace,
+			filepath,
+			settings
+		});
+
+		// Skip the formatting code without Editor configuration
+		if (!settings || !settings.formatOnSave || !provider) {
+			return null;
+		}
+
+		// Skip excluded files by Editor
+		let excludes: string[] = [];
+		if (settings && settings.ignoreFilesOnSave.length !== 0) {
+			excludes = excludes.concat(settings.ignoreFilesOnSave);
+		}
+
+		if (excludes.length !== 0) {
+			const currentFile = path.relative(vscode.workspace.rootPath, event.document.fileName);
+			if (micromatch([currentFile], excludes).length !== 0) {
+				return null;
+			}
+		}
+
+		const actions = provider.format().then((blocks) => {
+			return blocks.map((block) => {
+				if (block.error) {
+					showOutput(block.error.toString(), settings.showErrorMessages);
+				}
+
+				return vscode.TextEdit.replace(block.range, block.content);
+			});
+		}).catch((err: Error) => showOutput(err.stack, settings.showErrorMessages));
+
+		event.waitUntil(actions);
+	});
+
+	context.subscriptions.push(onCommand);
+	context.subscriptions.push(onSave);
 }

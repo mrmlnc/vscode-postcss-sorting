@@ -1,14 +1,38 @@
-'use strict';
+import { Range } from 'vscode';
 
-import * as vscode from 'vscode';
-
-export interface ISettings {
-	config?: object | string;
-	showErrorMessages?: boolean;
-	formatOnSave?: boolean;
+/**
+ * Plugin preset.
+ */
+export interface IPreset {
+	[prop: string]: {};
 }
 
-export interface IResult {
-	css: string;
-	range: vscode.Range;
+/**
+ * The plugin settings.
+ */
+export interface IPluginSettings {
+	config?: string | IPreset;
+	ignoreFilesOnSave?: string[];
+	formatOnSave?: boolean;
+	syntaxAssociations?: Record<string, string>;
+	showErrorMessages?: boolean;
+}
+
+/**
+ * The standard block of styles for processing.
+ */
+export interface IStyleBlock {
+	range: Range;
+	syntax: string;
+	content: string;
+	error: string;
+	changed: boolean;
+}
+
+/**
+ * The founded config by Config Profiler.
+ */
+export interface IFoundedConfig {
+	from: string;
+	config: object;
 }

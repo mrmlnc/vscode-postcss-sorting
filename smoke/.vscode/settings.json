@@ -1,0 +1,15 @@
+{
+	"postcssSorting.config": {
+		"order": [
+			"custom-properties",
+			"dollar-variables",
+			"declarations",
+			"at-rules",
+			"rules"
+		],
+		"properties-order": [
+			"display",
+			"content"
+		]
+	}
+}
