@@ -2,7 +2,8 @@
 
 import * as vscode from 'vscode';
 
-export function output(channel: vscode.OutputChannel, message: string, autoShowOutput = true): void {
+export function output(inChannel: vscode.OutputChannel, message: string, autoShowOutput: boolean = true): void {
+	let channel = inChannel;
 	if (!channel) {
 		channel = vscode.window.createOutputChannel('Stylefmt');
 	}

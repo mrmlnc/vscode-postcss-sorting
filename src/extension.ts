@@ -4,11 +4,11 @@ import * as vscode from 'vscode';
 
 import ConfigProfiler from 'config-profiler';
 
-import * as sorter from './postcss-sorting';
 import * as settingsManager from './managers/settings';
+import * as sorter from './postcss-sorting';
 import * as utils from './utils';
 
-import { ISettings } from './types';
+import { IResult, ISettings } from './types';
 
 const configProfiler = new ConfigProfiler(null, {
 	allowHomeDirectory: true,
@@ -24,7 +24,7 @@ const configProfiler = new ConfigProfiler(null, {
 	}
 });
 
-function getConfigForFile(document: vscode.TextDocument, config: object | string) {
+function getConfigForFile(document: vscode.TextDocument, config: object | string): Promise<{}> {
 	const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
 	const filepath = document.uri.fsPath;
 
@@ -37,12 +37,12 @@ function getConfigForFile(document: vscode.TextDocument, config: object | string
 	return configProfiler.getConfig(filepath, { settings: config });
 }
 
-function use(settings: ISettings, document: vscode.TextDocument, range: vscode.Range) {
+function use(settings: ISettings, document: vscode.TextDocument, range: vscode.Range): Promise<IResult> {
 	return getConfigForFile(document, settings.config)
 		.then((config) => !config ? null : sorter.use(config, document, range));
 }
 
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: vscode.ExtensionContext): void {
 	const outputChannel: vscode.OutputChannel = null;
 
 	// Supported languages
@@ -81,7 +81,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// For commands: "Format Document" and "Format Selection"
 	const format = vscode.languages.registerDocumentRangeFormattingEditProvider(supportedDocuments, {
-		provideDocumentRangeFormattingEdits(document, range) {
+		provideDocumentRangeFormattingEdits(document: vscode.TextDocument, range: vscode.Range): vscode.ProviderResult<vscode.TextEdit[]> {
 			// Prevent run command without active TextEditor
 			if (!vscode.window.activeTextEditor) {
 				return null;
@@ -92,14 +92,14 @@ export function activate(context: vscode.ExtensionContext) {
 			const settings = settingsManager.getSettings(workspaceUri);
 
 			return use(settings, document, range)
+				.catch((err) => utils.output(outputChannel, err, settings.showErrorMessages))
 				.then((result) => {
 					if (!result) {
 						return;
 					}
 
-					return <any>[vscode.TextEdit.replace(result.range, result.css)];
-				})
-				.catch((err) => utils.output(outputChannel, err, settings.showErrorMessages));
+					return [vscode.TextEdit.replace(result.range, result.css)];
+				});
 		}
 	});
 

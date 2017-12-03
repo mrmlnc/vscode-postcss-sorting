@@ -4,7 +4,7 @@ import * as assert from 'assert';
 
 import * as proxyquire from 'proxyquire';
 
-function makeVscodeWorkspace() {
+function makeVscodeWorkspace(): object {
 	return {
 		getConfiguration: () => ({
 			get: (type: string) => {

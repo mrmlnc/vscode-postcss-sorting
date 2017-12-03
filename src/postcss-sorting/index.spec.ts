@@ -3,8 +3,8 @@
 import * as assert from 'assert';
 import * as fs from 'fs';
 
-import * as vscode from 'vscode';
 import * as proxyquire from 'proxyquire';
+import * as vscode from 'vscode';
 
 import * as Types from '../types';
 
@@ -12,7 +12,7 @@ const text = fs.readFileSync('./fixtures/test.scss').toString();
 const textExpected = fs.readFileSync('./fixtures/test-expected.scss').toString();
 
 function mockupDocument(): vscode.TextDocument {
-	return <any>{
+	return <vscode.TextDocument>{
 		languageId: 'scss',
 		uri: { fsPath: '.tmp/test.scss' },
 		lineCount: text.split('\n').length,
@@ -25,7 +25,7 @@ function mockupDocument(): vscode.TextDocument {
 }
 
 class Position {
-	constructor(public line, public character) { }
+	constructor(public line: number, public character: string) { }
 }
 
 class Range {
