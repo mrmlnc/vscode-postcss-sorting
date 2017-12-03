@@ -69,7 +69,7 @@
     "mocha": "^4.0.1",
     "proxyquire": "^1.8.0",
     "tslint": "^5.8.0",
-    "tslint-config-xo": "^1.4.0",
+    "tslint-config-mrmlnc": "^1.0.0",
     "typescript": "^2.6.2",
     "vscode": "^1.1.9"
   },
