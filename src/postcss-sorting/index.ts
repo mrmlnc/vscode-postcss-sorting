@@ -6,6 +6,7 @@ import * as postcss from 'postcss';
 import * as postless from 'postcss-less';
 import * as postscss from 'postcss-scss';
 import * as postcssSorting from 'postcss-sorting';
+import * as sugarss from 'sugarss';
 
 import { IResult, ISettings } from '../types';
 
@@ -13,7 +14,7 @@ import { IResult, ISettings } from '../types';
  * Check syntax support.
  */
 export function isSupportedSyntax(language: string): boolean {
-	return ['css', 'postcss', 'less', 'scss'].indexOf(language) !== -1;
+	return ['css', 'postcss', 'less', 'scss', 'sugarss'].indexOf(language) !== -1;
 }
 
 function getSyntax(language: string): postcss.Syntax {
@@ -22,6 +23,8 @@ function getSyntax(language: string): postcss.Syntax {
 			return postless;
 		case 'scss':
 			return postscss;
+		case 'sugarss':
+			return sugarss;
 		default:
 			return null;
 	}
