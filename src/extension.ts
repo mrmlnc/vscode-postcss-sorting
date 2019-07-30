@@ -50,7 +50,8 @@ export function activate(context: vscode.ExtensionContext): void {
 		{ language: 'css', scheme: 'file' },
 		{ language: 'postcss', scheme: 'file' },
 		{ language: 'scss', scheme: 'file' },
-		{ language: 'less', scheme: 'file' }
+		{ language: 'less', scheme: 'file' },
+		{ language: 'sugarss', scheme: 'file' }
 	];
 
 	// For plugin command: "postcssSorting.execute"
