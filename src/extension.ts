@@ -106,4 +106,9 @@ export function activate(context: vscode.ExtensionContext): void {
 	// Subscriptions
 	context.subscriptions.push(command);
 	context.subscriptions.push(format);
+	
+	// Format on save
+	vscode.workspace.onDidSaveTextDocument((document: vscode.TextDocument) => {
+  		vscode.commands.executeCommand('postcssSorting.execute');
+	});
 }
